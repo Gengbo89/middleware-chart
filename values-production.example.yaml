@@ -9,6 +9,7 @@ global:
     allowInsecureImages: true
 
 mysql:
+  fullnameOverride: mysql
   image:
     repository: mysql
     tag: 9.4.0-debian-12-r1 # MySQL 9.4.0
@@ -20,6 +21,7 @@ mysql:
       type: LoadBalancer
 
 redis:
+  fullnameOverride: redis
   image:
     repository: redis
     tag: 8.2.1 # Redis 8.2.1
@@ -30,6 +32,7 @@ redis:
       type: LoadBalancer
 
 postgresql:
+  fullnameOverride: postgresql
   image:
     repository: postgresql
     tag: 17.6.0-debian-12-r4 # PostgreSQL 17.6.0

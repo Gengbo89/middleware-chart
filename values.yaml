@@ -9,6 +9,7 @@ global:
 # MySQL 14.0.3
 mysql:
   enabled: true
+  fullnameOverride: mysql
   architecture: standalone # standalone | replication
 
   image:
@@ -104,6 +105,7 @@ mysql:
 # Redis 27.0.17
 redis:
   enabled: true
+  fullnameOverride: redis
   architecture: standalone # standalone | replication
 
   image:
@@ -198,6 +200,7 @@ redis:
 # PostgreSQL 18.8.0
 postgresql:
   enabled: true
+  fullnameOverride: postgresql
   architecture: standalone # standalone | replication
 
   image:

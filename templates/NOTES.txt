@@ -2,21 +2,21 @@ The enabled middleware services are managed by this Helm release.
 
 MySQL:
   {{- if .Values.mysql.enabled }}
-  Service: {{ .Release.Name }}-mysql:3306
+  Service: {{ default (printf "%s-mysql" .Release.Name) .Values.mysql.fullnameOverride }}:{{ .Values.mysql.primary.service.ports.mysql }}
   {{- else }}
   disabled
   {{- end }}
 
 Redis:
   {{- if .Values.redis.enabled }}
-  Service: {{ .Release.Name }}-redis-master:6379
+  Service: {{ default (printf "%s-redis" .Release.Name) .Values.redis.fullnameOverride }}-master:{{ .Values.redis.master.service.ports.redis }}
   {{- else }}
   disabled
   {{- end }}
 
 PostgreSQL:
   {{- if .Values.postgresql.enabled }}
-  Service: {{ .Release.Name }}-postgresql:5432
+  Service: {{ default (printf "%s-postgresql" .Release.Name) .Values.postgresql.fullnameOverride }}:{{ .Values.postgresql.primary.service.ports.postgresql }}
   {{- else }}
   disabled
   {{- end }}
