@@ -9,15 +9,21 @@ global:
     allowInsecureImages: true
 
 mysql:
+  image:
+    tag: 9.4.0-debian-12-r1 # MySQL 9.4.0
   auth:
     rootPassword: root
     password: root
 
 redis:
+  image:
+    tag: 8.2.1 # Redis 8.2.1
   auth:
     password: ""
 
 postgresql:
+  image:
+    tag: 17.6.0-debian-12-r4 # PostgreSQL 17.6.0
   auth:
     postgresPassword: root
     password: root
