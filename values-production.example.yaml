@@ -1,0 +1,23 @@
+# Copy this file to values-production.yaml and replace all CHANGE_ME values.
+# Do not commit real production credentials.
+
+global:
+  imageRegistry: gengbo
+  defaultStorageClass: local-path
+  security:
+    # Required by current Bitnami charts when using a mirrored/private registry.
+    allowInsecureImages: true
+
+mysql:
+  auth:
+    rootPassword: root
+    password: root
+
+redis:
+  auth:
+    password: ""
+
+postgresql:
+  auth:
+    postgresPassword: root
+    password: root

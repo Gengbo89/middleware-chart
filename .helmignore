@@ -1,0 +1,8 @@
+.DS_Store
+.git/
+.github/
+.gitignore
+Chart.lock
+README.md
+Makefile
+values-production.example.yaml

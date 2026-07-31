@@ -1,0 +1,293 @@
+# Global settings inherited by supported Bitnami subcharts.
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  defaultStorageClass: ""
+  security:
+    allowInsecureImages: false
+
+# MySQL 14.0.3
+mysql:
+  enabled: true
+  architecture: standalone # standalone | replication
+
+  image:
+    registry: docker.io
+    repository: bitnami/mysql
+    tag: 9.4.0-debian-12-r1
+    digest: ""
+    pullPolicy: IfNotPresent
+
+  auth:
+    rootPassword: ""
+    createDatabase: true
+    database: app
+    username: app
+    password: ""
+    replicationUser: replicator
+    replicationPassword: ""
+    # When set, password fields above are ignored. Required keys:
+    # mysql-root-password, mysql-password, mysql-replication-password.
+    existingSecret: ""
+
+  primary:
+    # For custom my.cnf content, see charts/mysql/values.yaml:
+    # configuration: |-
+    #   [mysqld]
+    #   max_connections=500
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    service:
+      type: ClusterIP
+      ports:
+        mysql: 3306
+        mysqlx: 33060
+      nodePorts:
+        mysql: ""
+        mysqlx: ""
+      clusterIP: ""
+      annotations: {}
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+      annotations: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  # Used only when architecture=replication.
+  secondary:
+    replicaCount: 1
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    service:
+      type: ClusterIP
+      ports:
+        mysql: 3306
+        mysqlx: 33060
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  tls:
+    enabled: false
+    existingSecret: ""
+
+  metrics:
+    enabled: false
+    serviceMonitor:
+      enabled: false
+
+# Redis 27.0.17
+redis:
+  enabled: true
+  architecture: standalone # standalone | replication
+
+  image:
+    registry: registry-1.docker.io
+    repository: bitnami/redis
+    tag: latest
+    digest: ""
+    pullPolicy: IfNotPresent
+
+  auth:
+    enabled: true
+    password: ""
+    existingSecret: ""
+    existingSecretPasswordKey: redis-password
+    # Redis username support is provided through ACL.
+    acl:
+      enabled: false
+      users: []
+      userSecret: ""
+
+  # For redis.conf settings, see charts/redis/values.yaml:
+  # commonConfiguration: |-
+  #   appendonly yes
+  #   maxmemory-policy allkeys-lru
+  master:
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    service:
+      type: ClusterIP
+      ports:
+        redis: 6379
+      nodePorts:
+        redis: ""
+      clusterIP: ""
+      annotations: {}
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+      annotations: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  # Used only when architecture=replication.
+  replica:
+    replicaCount: 3
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    service:
+      type: ClusterIP
+      ports:
+        redis: 6379
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  tls:
+    enabled: false
+    existingSecret: ""
+
+  metrics:
+    enabled: false
+    service:
+      ports:
+        http: 9121
+    serviceMonitor:
+      enabled: false
+
+# PostgreSQL 18.8.0
+postgresql:
+  enabled: true
+  architecture: standalone # standalone | replication
+
+  image:
+    registry: registry-1.docker.io
+    repository: bitnami/postgresql
+    tag: latest
+    digest: ""
+    pullPolicy: IfNotPresent
+
+  auth:
+    enablePostgresUser: true
+    postgresPassword: ""
+    username: app
+    password: ""
+    database: app
+    replicationUsername: repl_user
+    replicationPassword: ""
+    existingSecret: ""
+    secretKeys:
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+      replicationPasswordKey: replication-password
+      metricsPasswordKey: metrics-password
+
+  # For postgresql.conf/pg_hba.conf settings, see
+  # charts/postgresql/values.yaml.
+  primary:
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    service:
+      enabled: true
+      type: ClusterIP
+      ports:
+        postgresql: 5432
+      nodePorts:
+        postgresql: ""
+      clusterIP: ""
+      annotations: {}
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+      annotations: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  # Used only when architecture=replication.
+  readReplicas:
+    replicaCount: 1
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    service:
+      type: ClusterIP
+      ports:
+        postgresql: 5432
+    persistence:
+      enabled: true
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  tls:
+    enabled: false
+    certificatesSecret: ""
+
+  metrics:
+    enabled: false
+    service:
+      ports:
+        metrics: 9187
+    serviceMonitor:
+      enabled: false

@@ -1,0 +1,24 @@
+The enabled middleware services are managed by this Helm release.
+
+MySQL:
+  {{- if .Values.mysql.enabled }}
+  Service: {{ .Release.Name }}-mysql:3306
+  {{- else }}
+  disabled
+  {{- end }}
+
+Redis:
+  {{- if .Values.redis.enabled }}
+  Service: {{ .Release.Name }}-redis-master:6379
+  {{- else }}
+  disabled
+  {{- end }}
+
+PostgreSQL:
+  {{- if .Values.postgresql.enabled }}
+  Service: {{ .Release.Name }}-postgresql:5432
+  {{- else }}
+  disabled
+  {{- end }}
+
+Use production credentials through each subchart's auth.existingSecret setting.
