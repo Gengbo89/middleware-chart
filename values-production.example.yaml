@@ -14,16 +14,25 @@ mysql:
   auth:
     rootPassword: root
     password: root
+  primary:
+    service:
+      type: LoadBalancer
 
 redis:
   image:
     tag: 8.2.1 # Redis 8.2.1
   auth:
     password: ""
+  master:
+    service:
+      type: LoadBalancer
 
 postgresql:
   image:
     tag: 17.6.0-debian-12-r4 # PostgreSQL 17.6.0
   auth:
-    postgresPassword: root
-    password: root
+    postgresPassword: postgres
+    password: postgres
+  primary:
+    service:
+      type: LoadBalancer
