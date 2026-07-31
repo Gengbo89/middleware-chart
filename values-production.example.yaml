@@ -10,6 +10,7 @@ global:
 
 mysql:
   image:
+    repository: mysql
     tag: 9.4.0-debian-12-r1 # MySQL 9.4.0
   auth:
     rootPassword: root
@@ -20,6 +21,7 @@ mysql:
 
 redis:
   image:
+    repository: redis
     tag: 8.2.1 # Redis 8.2.1
   auth:
     password: ""
@@ -29,6 +31,7 @@ redis:
 
 postgresql:
   image:
+    repository: postgresql
     tag: 17.6.0-debian-12-r4 # PostgreSQL 17.6.0
   auth:
     postgresPassword: postgres
