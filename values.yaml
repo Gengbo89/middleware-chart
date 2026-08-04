@@ -294,3 +294,118 @@ postgresql:
         metrics: 9187
     serviceMonitor:
       enabled: false
+
+# Elasticsearch 22.1.6
+elasticsearch:
+  enabled: true
+  fullnameOverride: elasticsearch
+
+  image:
+    registry: docker.io
+    repository: bitnami/elasticsearch
+    tag: 9.1.2-debian-12-r0
+    digest: ""
+    pullPolicy: IfNotPresent
+
+  # Password authentication also requires Elasticsearch TLS configuration.
+  security:
+    enabled: false
+    elasticPassword: ""
+    existingSecret: ""
+
+  service:
+    type: LoadBalancer
+    ports:
+      restAPI: 9200
+      transport: 9300
+    nodePorts:
+      restAPI: ""
+      transport: ""
+    annotations: {}
+
+  # Run a single combined master/data node by default.
+  master:
+    masterOnly: false
+    replicaCount: 1
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        cpu: "2"
+        memory: 2Gi
+    heapSize: 1g
+    persistence:
+      enabled: true
+      existingClaim: ""
+      storageClass: ""
+      accessModes:
+        - ReadWriteOnce
+      size: 8Gi
+
+  data:
+    replicaCount: 0
+  coordinating:
+    replicaCount: 0
+  ingest:
+    enabled: false
+    replicaCount: 0
+
+  metrics:
+    enabled: false
+    serviceMonitor:
+      enabled: false
+
+# MongoDB 19.1.22
+mongodb:
+  enabled: true
+  fullnameOverride: mongodb
+  architecture: standalone
+  useStatefulSet: true
+
+  image:
+    registry: registry-1.docker.io
+    repository: bitnami/mongodb
+    tag: latest
+    digest: ""
+    pullPolicy: IfNotPresent
+
+  auth:
+    enabled: true
+    rootUser: root
+    rootPassword: ""
+    usernames: []
+    passwords: []
+    databases: []
+    existingSecret: ""
+
+  resourcesPreset: "none"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+  service:
+    type: LoadBalancer
+    ports:
+      mongodb: 27017
+    nodePorts:
+      mongodb: ""
+    annotations: {}
+
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+
+  metrics:
+    enabled: false
+    serviceMonitor:
+      enabled: false

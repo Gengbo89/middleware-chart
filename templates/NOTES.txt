@@ -21,4 +21,19 @@ PostgreSQL:
   disabled
   {{- end }}
 
-Use production credentials through each subchart's auth.existingSecret setting.
+Elasticsearch:
+  {{- if .Values.elasticsearch.enabled }}
+  Service: {{ default (printf "%s-elasticsearch" .Release.Name) .Values.elasticsearch.fullnameOverride }}:{{ .Values.elasticsearch.service.ports.restAPI }}
+  {{- else }}
+  disabled
+  {{- end }}
+
+MongoDB:
+  {{- if .Values.mongodb.enabled }}
+  Service: {{ default (printf "%s-mongodb" .Release.Name) .Values.mongodb.fullnameOverride }}:{{ .Values.mongodb.service.ports.mongodb }}
+  {{- else }}
+  disabled
+  {{- end }}
+
+Use existing Secrets for production credentials. Elasticsearch uses
+security.existingSecret; the database charts use auth.existingSecret.

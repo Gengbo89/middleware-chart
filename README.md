@@ -7,16 +7,20 @@
 | MySQL | `14.0.3` | 启用 | 单节点 |
 | Redis | `27.0.17` | 启用 | 单节点 |
 | PostgreSQL | `18.8.0` | 启用 | 单节点 |
+| Elasticsearch | `22.1.6` | 启用 | 单节点 |
+| MongoDB | `19.1.22` | 启用 | 单节点 |
 
 ## 使用
 
-三个子 Chart 均以解压后的源码形式保存在仓库中，可以直接查看和修改：
+五个子 Chart 均以解压后的源码形式保存在仓库中，可以直接查看和修改：
 
 - `charts/mysql`
 - `charts/redis`
 - `charts/postgresql`
+- `charts/elasticsearch`
+- `charts/mongodb`
 
-`Chart.lock` 用于记录上游版本，`helm dependency list .` 会将三个依赖显示为
+`Chart.lock` 用于记录上游版本，`helm dependency list .` 会将五个依赖显示为
 `unpacked`。不要在项目根目录直接执行 `helm dependency update`，否则 Helm
 会再次生成 `.tgz` 文件。
 
@@ -47,7 +51,8 @@ helm upgrade --install middleware . \
   -f values-production.yaml
 ```
 
-默认会安装全部三个组件。可以按需关闭任意组件：
+默认会安装全部五个组件。`values-production.example.yaml` 中每个组件都有
+`enabled` 开关，也可以通过命令行按需控制：
 
 ```bash
 helm upgrade --install middleware . \
@@ -55,7 +60,9 @@ helm upgrade --install middleware . \
   --create-namespace \
   --set mysql.enabled=false \
   --set redis.enabled=true \
-  --set postgresql.enabled=false
+  --set postgresql.enabled=false \
+  --set elasticsearch.enabled=false \
+  --set mongodb.enabled=false
 ```
 
 ## 配置
@@ -122,17 +129,21 @@ postgresql:
 - `charts/mysql/values.yaml`
 - `charts/redis/values.yaml`
 - `charts/postgresql/values.yaml`
+- `charts/elasticsearch/values.yaml`
+- `charts/mongodb/values.yaml`
 
 上游文档：
 
 - [MySQL](https://artifacthub.io/packages/helm/bitnami/mysql)
 - [Redis](https://artifacthub.io/packages/helm/bitnami/redis)
 - [PostgreSQL](https://artifacthub.io/packages/helm/bitnami/postgresql)
+- [Elasticsearch](https://artifacthub.io/packages/helm/bitnami/elasticsearch)
+- [MongoDB](https://artifacthub.io/packages/helm/bitnami/mongodb)
 
 ## 凭据与持久化
 
-`values.yaml` 不保存明文密码。首次安装时 Bitnami chart 会自动生成凭据；生产环境建议提前创建 Kubernetes Secret，并通过各组件的 `auth.existingSecret` 引用。可复制 `values-production.example.yaml` 作为生产配置起点，但不要提交包含真实凭据的文件。
+`values.yaml` 不保存明文密码。首次安装时 Bitnami chart 会自动生成凭据；生产环境建议提前创建 Kubernetes Secret。数据库 Chart 使用 `auth.existingSecret`，Elasticsearch 使用 `security.existingSecret`。可复制 `values-production.example.yaml` 作为生产配置起点，但不要提交包含真实凭据的文件。
 
-三个组件默认均启用 PVC，容量为 `8Gi`。通过 `global.defaultStorageClass` 指定集群的 StorageClass；留空时使用集群默认值。
+五个组件默认均启用 PVC，容量为 `8Gi`。通过 `global.defaultStorageClass` 指定集群的 StorageClass；留空时使用集群默认值。
 
 升级前应固定并复用现有 Secret，否则数据库密码可能与持久卷中的已有数据不一致。跨主版本升级子 chart 或数据库镜像前，请先阅读 Bitnami 的升级说明并做好备份。

@@ -8,5 +8,11 @@ dependencies:
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 18.8.0
-digest: sha256:28eda9a6938d00a5d0cab2c48a32874d938027b0ddd821aff7c09b18947ad737
-generated: "2026-07-31T09:52:53.291619+08:00"
+- name: elasticsearch
+  repository: https://charts.bitnami.com/bitnami
+  version: 22.1.6
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.1.22
+digest: sha256:5e21695671a268abe5cdf031c2a838c56a0331b3b00bb1cb11063cff7fbfb2de
+generated: "2026-08-04T10:21:46.363761+08:00"

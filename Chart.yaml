@@ -10,6 +10,8 @@ keywords:
   - mysql
   - redis
   - postgresql
+  - elasticsearch
+  - mongodb
 dependencies:
   - name: mysql
     version: 14.0.3
@@ -23,3 +25,11 @@ dependencies:
     version: 18.8.0
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
+  - name: elasticsearch
+    version: 22.1.6
+    repository: https://charts.bitnami.com/bitnami
+    condition: elasticsearch.enabled
+  - name: mongodb
+    version: 19.1.22
+    repository: https://charts.bitnami.com/bitnami
+    condition: mongodb.enabled
